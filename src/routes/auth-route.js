@@ -19,7 +19,7 @@ module.exports = (app) => {
     "/api/1.0/login",
     rateLimiter({ secondsWindow: 60, allowedHits: 5 }),
     validateAdminLoginInput,
-    catchAsync(async (req, res, next) => {
+    catchAsync(async (req, res) => {
       const userInput = req.body;
       const admin = await service.AdminSignIn(userInput);
       res.send(admin);

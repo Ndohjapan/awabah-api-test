@@ -1,5 +1,6 @@
-const auth = require("./auth-route");
-
 module.exports = {
-  auth,
+  auth: require("./auth-route"),
+  category: require("./category-route"),
+  supplier: require("./supplier-route"),
+  product: require("./product-routes")
 };
