@@ -43,7 +43,7 @@ class CategoryRepository {
   async FindAll() {
     try {
       const categorys = await Category.find({ active: true }).sort({
-        createAt: -1,
+        createdAt: -1,
       });
       if (!categorys) throw new Error();
       return categorys;

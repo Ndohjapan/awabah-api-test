@@ -22,7 +22,7 @@ class CustomerRepository {
     try {
       const existingCustomer = await Customer.findOne(
         { email },
-        { createAt: 0, updatedAt: 0 },
+        { createdAt: 0, updatedAt: 0 },
       );
 
       return existingCustomer;
@@ -33,10 +33,13 @@ class CustomerRepository {
 
   async FuzzySearchName(searchTerm) {
     try {
-      const existingCustomer = await Customer.find({
-        $text: { $search: searchTerm },
-        active: true,
-      }, {password: 0});
+      const existingCustomer = await Customer.find(
+        {
+          $text: { $search: searchTerm },
+          active: true,
+        },
+        { password: 0 },
+      );
 
       if (!existingCustomer) throw new Error();
 
@@ -48,7 +51,7 @@ class CustomerRepository {
 
   async FindCustomerById(id) {
     try {
-      const customer = await Customer.findById(id, {password: 0});
+      const customer = await Customer.findById(id, { password: 0 });
 
       if (!customer) throw new Error();
 
@@ -70,7 +73,7 @@ class CustomerRepository {
           sort: { createdAt: -1 },
           page,
           limit,
-          select: "-password"
+          select: "-password",
         };
 
         Customer.paginate({}, options, function (err, result) {
@@ -121,7 +124,7 @@ class CustomerRepository {
           sort: { createdAt: -1 },
           page,
           limit,
-          select: "-password"
+          select: "-password",
         };
 
         Customer.paginate(data, options, function (err, result) {

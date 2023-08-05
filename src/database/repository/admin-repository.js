@@ -16,7 +16,7 @@ class AdminRepository {
     try {
       const existingAdmin = await Admin.findOne(
         { email },
-        { createAt: 0, updatedAt: 0 },
+        { createdAt: 0, updatedAt: 0 },
       );
 
       return existingAdmin;
@@ -39,7 +39,9 @@ class AdminRepository {
 
   async FindAll() {
     try {
-      const admins = await Admin.find({}, { password: 0 }).sort({createAt: -1});
+      const admins = await Admin.find({}, { password: 0 }).sort({
+        createdAt: -1,
+      });
       if (!admins) throw new Error();
       return admins;
     } catch (error) {
@@ -62,7 +64,9 @@ class AdminRepository {
 
   async FilterAdmins({ data }) {
     try {
-      const admins = await Admin.find(data, { password: 0 }).sort({createAt: -1});
+      const admins = await Admin.find(data, { password: 0 }).sort({
+        createdAt: -1,
+      });
       if (!admins) throw new Error();
       return admins;
     } catch (error) {

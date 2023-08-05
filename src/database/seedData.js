@@ -8,7 +8,7 @@ module.exports = {
       password: "$2a$12$s9UsA8dSLGFD0rsSSpzq8.vZt.1QdZYxXWxtnjPWadxZqQ39ErmKS",
     },
     {
-      username: "John Doe",
+      name: "John Doe",
       email: "admin2@mail.com",
       type: "sub-admin",
       permissions: ["create product"],
@@ -16,9 +16,18 @@ module.exports = {
     },
   ],
   categories: [
-    {name: "Toys"},
-    {name: "Electronics"},
-    {name: "Mobile Accesories"},
-    {name: "Apparels"}
-  ]
+    { name: "Toys" },
+    { name: "Electronics" },
+    { name: "Mobile Accesories" },
+    { name: "Apparels" },
+  ],
+  customers: [
+    {
+      name: "John Doe",
+      phone: "09012345678",
+      address: "12, Mars Aven.",
+      email: "user1@mail.com",
+      password: "$2a$12$s9UsA8dSLGFD0rsSSpzq8.vZt.1QdZYxXWxtnjPWadxZqQ39ErmKS",
+    },
+  ],
 };

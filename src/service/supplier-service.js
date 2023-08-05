@@ -12,6 +12,8 @@ class SupplierService {
     try {
       const supplier = await this.repository.CreateSupplier(data);
 
+      supplier.active = undefined;
+
       return supplier;
     } catch (error) {
       throw new CreationException(en["supplier-creation-error"], 401);
@@ -48,11 +50,13 @@ class SupplierService {
       }
       throw new Error(en["supplier-find-error"]);
     } catch (error) {
-      throw new NotFoundException(error.supplier || en["supplier-delete-error"]);
+      throw new NotFoundException(
+        error.supplier || en["supplier-delete-error"],
+      );
     }
   }
 
-  async UpdateOne(id, data){
+  async UpdateOne(id, data) {
     let updateData = {};
 
     Object.entries(data).forEach(([key, value]) => {
@@ -60,34 +64,33 @@ class SupplierService {
         updateData[key] = value;
       }
     });
-    
+
     try {
-      const supplier = await this.repository.UpdateOne({id, updateData});
-    
+      const supplier = await this.repository.UpdateOne({ id, updateData });
+
       return supplier;
-        
     } catch (error) {
-      throw new NotFoundException(en["supplier-find-error"]);      
-    }    
+      throw new NotFoundException(en["supplier-find-error"]);
+    }
   }
 
-  async FilterSuppliers(id, data){
-    let updateData = {};
+  async FilterSuppliers(data) {
+    let filterData = {};
 
     Object.entries(data).forEach(([key, value]) => {
       if (value != "") {
-        updateData[key] = value;
+        filterData[key] = value;
       }
     });
-    
+
     try {
-      const supplier = await this.repository.FilterSupplier({updateData});
-    
+      const supplier = await this.repository.FilterSupplier({ filterData });
+
       return supplier;
-        
     } catch (error) {
-      throw new NotFoundException(en["supplier-find-error"]);      
-    }    
+      console.log(error);
+      throw new NotFoundException(en["supplier-find-error"]);
+    }
   }
 }
 
