@@ -43,7 +43,7 @@ class SupplierRepository {
   async FindAll() {
     try {
       const suppliers = await Supplier.find({ active: true }).sort({
-        createAt: -1,
+        createdAt: -1,
       });
       if (!suppliers) throw new Error();
       return suppliers;
@@ -68,6 +68,7 @@ class SupplierRepository {
         updateData,
         {
           new: true,
+          select: "-active"
         },
       );
 
@@ -80,7 +81,7 @@ class SupplierRepository {
   async FilterSupplier({ filterData }) {
     try {
       const suppliers = await Supplier.find(filterData).sort({
-        createAt: -1,
+        createdAt: -1,
       });
       if (!suppliers) throw new Error();
       return suppliers;
