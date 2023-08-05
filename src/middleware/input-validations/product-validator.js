@@ -3,7 +3,7 @@ const en = require("../../../locale/en");
 const ValidationException = require("../../error/validation-exception");
 const mongoose = require("mongoose");
 
-const validateCreateSupplierInput = [
+const validateCreateProductInput = [
   check("name")
     .notEmpty()
     .withMessage(en["name-required"])
@@ -20,20 +20,14 @@ const validateCreateSupplierInput = [
     .notEmpty()
     .withMessage(en["stock-required"])
     .bail()
-    .isString()
-    .withMessage(en["stock-format"])
-    .bail()
-    .isEmail()
-    .withMessage(en["email-format"]),
+    .isNumeric()
+    .withMessage(en["stock-format"]),
   check("price")
     .notEmpty()
     .withMessage(en["price-required"])
     .bail()
-    .isString()
-    .withMessage(en["price-format"])
-    .bail()
-    .isEmail()
-    .withMessage(en["email-format"]),
+    .isNumeric()
+    .withMessage(en["price-format"]),
   check("category")
     .notEmpty()
     .withMessage(en["category-required"])
@@ -68,7 +62,7 @@ const validateCreateSupplierInput = [
   },
 ];
 
-const validateSupplierId = [
+const validateProductId = [
   param("id")
     .not()
     .isEmpty()
@@ -92,4 +86,4 @@ const validateSupplierId = [
   },
 ];
 
-module.exports = { validateCreateSupplierInput, validateSupplierId };
+module.exports = { validateCreateProductInput, validateProductId };

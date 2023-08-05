@@ -1,6 +1,5 @@
 const {
-  validateCreateSupplierInput,
-  validateSupplierId,
+  validateCreateProductInput, validateProductId
 } = require("../middleware/input-validations/product-validator");
 const catchAsync = require("../util/catch-async");
 const { rateLimiter } = require("../middleware/rate-limiter");
@@ -14,10 +13,10 @@ module.exports = async (app) => {
     "/api/1.0/product",
     rateLimiter({ secondsWindow: 60, allowedHits: 10 }),
     adminAuth,
-    validateCreateSupplierInput,
+    validateCreateProductInput,
     catchAsync(async (req, res) => {
       let data = req.body;
-      const product = await service.CreateSupplier(data);
+      const product = await service.CreateProduct(data);
       res.send(product);
     }),
   );
@@ -37,7 +36,7 @@ module.exports = async (app) => {
   app.get(
     "/api/1.0/product/:id",
     rateLimiter({ secondsWindow: 60, allowedHits: 10 }),
-    validateSupplierId,
+    validateProductId,
     catchAsync(async (req, res) => {
       const id = req.params.id;
       const product = await service.FindById(id);
@@ -48,7 +47,6 @@ module.exports = async (app) => {
   app.get(
     "/api/1.0/product/search/:searchTerm",
     rateLimiter({ secondsWindow: 60, allowedHits: 10 }),
-    validateSupplierId,
     catchAsync(async (req, res) => {
       const searchTerm = req.params.searchTerm;
       const products = await service.SearchProductName(searchTerm);

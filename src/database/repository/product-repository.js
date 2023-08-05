@@ -21,10 +21,16 @@ class ProductRepository {
 
   async FuzzySearchName(searchTerm) {
     try {
-      const existingProduct = await Product.find({
-        $text: { $search: searchTerm },
-        active: true,
-      });
+      let productAggregate = [
+        {
+          $match: {
+            $or: [{ name: searchTerm }],
+            active: true,
+          },
+        },
+      ];
+
+      const existingProduct = await Product.aggregate(productAggregate);
 
       if (!existingProduct) throw new Error();
 
@@ -36,7 +42,7 @@ class ProductRepository {
 
   async FindProductById(id) {
     try {
-      const product = await Product.findById(id);
+      const product = await Product.findById(id, { active: 0 });
 
       if (!product) throw new Error();
 
@@ -58,6 +64,7 @@ class ProductRepository {
           sort: { createdAt: -1 },
           page,
           limit,
+          select: "-active",
         };
 
         Product.paginate({}, options, function (err, result) {
@@ -76,8 +83,10 @@ class ProductRepository {
   async DeleteProduct(id) {
     try {
       await Product.findByIdAndUpdate(id, { $set: { active: false } });
+      console.log(id);
       return true;
     } catch (error) {
+      console.log(error);
       throw new internalException(en["server-error"]);
     }
   }
