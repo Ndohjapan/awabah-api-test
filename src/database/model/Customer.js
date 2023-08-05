@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate-v2");
+const en = require("../../../locale/en");
+const bcrypt = require("bcrypt");
 
 const CustomerSchema = new mongoose.Schema(
   {
@@ -24,6 +26,10 @@ const CustomerSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    password: {
+      type: String,
+      required: [true, en["password-required"]],
+    },
   },
   {
     timestamps: true,
@@ -31,5 +37,11 @@ const CustomerSchema = new mongoose.Schema(
 );
 
 CustomerSchema.plugin(mongoosePaginate);
+
+CustomerSchema.index({ name: "text" });
+
+CustomerSchema.methods.validatePassword = function (password) {
+  return bcrypt.compare(password, this.password);
+};
 
 module.exports = mongoose.model("customer", CustomerSchema);
