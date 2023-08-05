@@ -59,8 +59,7 @@ module.exports = async (app) => {
     adminAuth,
     catchAsync(async (req, res) => {
       let data = req.body;
-      let id = req.params.id;
-      const categories = await service.FilterSuppliers(id, data);
+      const categories = await service.FilterSuppliers(data);
       res.send(categories);
     }),
   );

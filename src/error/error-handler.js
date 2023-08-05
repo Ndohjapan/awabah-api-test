@@ -1,3 +1,5 @@
+const en = require("../../locale/en");
+
 // eslint-disable-next-line no-unused-vars
 module.exports = (err, req, res, next) => {
   let { status, message, errors } = err;
@@ -9,6 +11,9 @@ module.exports = (err, req, res, next) => {
       (error) =>
         (validationErrors[error.path || "file"] = error.msg || error.message),
     );
+  }
+  if(status > 499){
+    message = en["server-error"];
   }
   res.status(status).send({
     path: req.originalUrl,

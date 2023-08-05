@@ -1,6 +1,6 @@
 // seed.js
 const { connectToDatabase, mongoose } = require("./connection");
-const { Admin, Category } = require("./model");
+const { Admin, Category, Customer } = require("./model");
 const seedData = require("./seedData");
 
 async function up() {
@@ -13,6 +13,7 @@ async function up() {
     // Insert seed data into the collection
     await Admin.create(seedData.admins); 
     await Category.create(seedData.categories);
+    await Customer.create(seedData.customers);
 
     console.log("Seeding completed successfully");
   } catch (err) {

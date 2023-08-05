@@ -54,5 +54,6 @@ module.exports = {
   "order-delete-error": "Cannot delete order",
   "customer-creation-error": "Cannot create customer",
   "customer-find-error": "Customer does not exist",
-  "customer-delete-error": "Cannot delete customer"
+  "customer-delete-error": "Cannot delete customer",
+  "signup-successful": "Signup Successful"
 };

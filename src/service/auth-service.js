@@ -28,6 +28,9 @@ class AuthService {
 
         if (passwordCheck) {
           existingAdmin.password = undefined;
+          existingAdmin.permissions = undefined;
+          existingAdmin.status = undefined;
+          existingAdmin.type = undefined;
           const secretKey = jwtConfig.secret;
           const token = jwt.sign({ email }, secretKey, { expiresIn: "1d" });
           return { admin: existingAdmin, token };
@@ -58,7 +61,7 @@ class AuthService {
           phone,
         });
 
-        return "Successful";
+        return {message: en["signup-successful"]};
       }
 
       throw new AuthException(en["email-taken"], 409);
