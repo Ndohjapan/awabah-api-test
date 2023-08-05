@@ -15,6 +15,8 @@ module.exports = {
   "price-null": "Price cannot be null",
   "price-format": "Price must be a number",
   "password-format": "Password must be a string",
+  "password-length": "Password must be 8 character long or more",
+  "password-requirement": "Password must contain Uppercase, Lowercase, Number and Symbol",
   "admin-creation-error": "Cannot create admin",
   "admin-update-error": "Cannot update user",
   "admin-not-found": "Admin not found",
@@ -44,5 +46,8 @@ module.exports = {
   "supplier-delete-error": "Cannot delete supplier",
   "product-creation-error": "Cannot create product",
   "product-find-error": "Product does not exist",
-  "product-delete-error": "Cannot delete product"
+  "product-delete-error": "Cannot delete product",
+  "customer-creation-error": "Cannot create customer",
+  "customer-find-error": "Customer does not exist",
+  "customer-delete-error": "Cannot delete customer"
 };
