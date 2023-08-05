@@ -8,7 +8,7 @@ class AdminRepository {
       await Admin.create({ name, email, password });
       return true;
     } catch (error) {
-      throw new internalException(en.admin_creation_error);
+      throw new internalException(en["admin-creation-error"]);
     }
   }
 

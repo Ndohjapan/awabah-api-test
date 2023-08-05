@@ -6,10 +6,6 @@ const OrderSchema = new mongoose.Schema(
     items: {
       type: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }],
     },
-    customer: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "customer",
-    },
     totalAmount: {
       type: Number,
       default: 0,
