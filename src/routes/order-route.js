@@ -1,64 +1,63 @@
-const {
-  validateCustomerId
-} = require("../middleware/input-validations/customer-validator");
+const {validateCreateOrderInput, validateOrderId} = require("../middleware/input-validations/order-validator");
 const catchAsync = require("../util/catch-async");
 const { rateLimiter } = require("../middleware/rate-limiter");
 const { adminAuth, generalAuth } = require("../middleware/protect");
-const { CustomerService } = require("../service/customer-service");
+const { OrderService } = require("../service/order-service");
 
 module.exports = async (app) => {
-  const service = new CustomerService();
+  const service = new OrderService();
+
+  app.post(
+    "/api/1.0/order",
+    rateLimiter({ secondsWindow: 60, allowedHits: 10 }),
+    generalAuth,
+    validateCreateOrderInput,
+    catchAsync(async (req, res) => {
+      let data = req.body;
+      const order = await service.CreateSupplier(data);
+      res.send(order);
+    }),
+  );
 
   app.get(
-    "/api/1.0/customer",
+    "/api/1.0/order",
     rateLimiter({ secondsWindow: 60, allowedHits: 10 }),
+    adminAuth,
     catchAsync(async (req, res) => {
       let { page, limit } = req.query;
       page = page ? page : 1;
       limit = limit ? limit : 50;
-      const customers = await service.FindAll({ page, limit });
-      res.send(customers);
+      const orders = await service.FindAll({ page, limit });
+      res.send(orders);
     }),
   );
 
   app.get(
-    "/api/1.0/customer/:id",
+    "/api/1.0/order/:id",
     rateLimiter({ secondsWindow: 60, allowedHits: 10 }),
-    validateCustomerId,
+    validateOrderId,
     generalAuth,
     catchAsync(async (req, res) => {
       const id = req.params.id;
-      const customer = await service.FindById(id);
-      res.send(customer);
-    }),
-  );
-
-  app.get(
-    "/api/1.0/customer/search/:searchTerm",
-    rateLimiter({ secondsWindow: 60, allowedHits: 10 }),
-    validateCustomerId,
-    generalAuth,
-    catchAsync(async (req, res) => {
-      const searchTerm = req.params.searchTerm;
-      const customers = await service.SearchProductName(searchTerm);
-      res.send(customers);
+      const order = await service.FindById(id);
+      res.send(order);
     }),
   );
 
   app.patch(
-    "/api/1.0/customer/:id",
+    "/api/1.0/order/:id",
     rateLimiter({ secondsWindow: 60, allowedHits: 10 }),
     generalAuth,
     catchAsync(async (req, res) => {
       let data = req.body;
       let id = req.params.id;
-      const customer = await service.UpdateOne(id, data);
-      res.send(customer);
+      const order = await service.UpdateOne(id, data);
+      res.send(order);
     }),
   );
 
   app.post(
-    "/api/1.0/customer/filter",
+    "/api/1.0/order/filter",
     rateLimiter({ secondsWindow: 60, allowedHits: 10 }),
     adminAuth,
     catchAsync(async (req, res) => {
@@ -66,24 +65,23 @@ module.exports = async (app) => {
       page = page ? page : 1;
       limit = limit ? limit : 50;
       let data = req.body;
-      const customers = await service.FilterCustomers({
+      const orders = await service.FilterUsers({
         page,
         limit,
         data,
       });
-      res.send(customers);
+      res.send(orders);
     }),
   );
 
   app.delete(
-    "/api/1.0/customer/:id",
+    "/api/1.0/order/:id",
     rateLimiter({ secondsWindow: 60, allowedHits: 10 }),
     generalAuth,
     catchAsync(async (req, res) => {
       let id = req.params.id;
-      const user = req.user;
-      const customer = await service.DeleteCustomer(id, user);
-      res.status(204).send(customer);
+      const order = await service.DeleteOrder(id);
+      res.status(204).send(order);
     }),
   );
 };

@@ -71,7 +71,7 @@ module.exports = async (app) => {
     adminAuth,
     catchAsync(async (req, res) => {
       let id = req.params.id;
-      const category = await service.DeleteCategory(id);
+      const category = await service.DeleteSupplier(id);
       res.status(204).send(category);
     }),
   );

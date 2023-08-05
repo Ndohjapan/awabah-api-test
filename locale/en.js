@@ -32,6 +32,8 @@ module.exports = {
   "category-format": "Category must be a string",
   "supplier-required" :"Supplier is required",
   "supplier-format": "Supplier must be a string",
+  "items-required" :"Items array is required",
+  "items-format": "Items must be an array with at least one element",
   "phone-required" :"Phone is required",
   "phone-format": "Phone must be a number",
   "phone-length": "Invalid Phone Length",
@@ -47,6 +49,9 @@ module.exports = {
   "product-creation-error": "Cannot create product",
   "product-find-error": "Product does not exist",
   "product-delete-error": "Cannot delete product",
+  "order-creation-error": "Cannot create order",
+  "order-find-error": "Order does not exist",
+  "order-delete-error": "Cannot delete order",
   "customer-creation-error": "Cannot create customer",
   "customer-find-error": "Customer does not exist",
   "customer-delete-error": "Cannot delete customer"

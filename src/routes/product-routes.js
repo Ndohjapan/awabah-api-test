@@ -77,7 +77,7 @@ module.exports = async (app) => {
       page = page ? page : 1;
       limit = limit ? limit : 50;
       let data = req.body;
-      const products = await service.FilterUsers({
+      const products = await service.FilterProducts({
         page,
         limit,
         data,
@@ -92,7 +92,7 @@ module.exports = async (app) => {
     adminAuth,
     catchAsync(async (req, res) => {
       let id = req.params.id;
-      const product = await service.DeleteCategory(id);
+      const product = await service.DeleteProduct(id);
       res.status(204).send(product);
     }),
   );
