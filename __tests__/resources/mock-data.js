@@ -7,10 +7,10 @@ module.exports = {
     password: "$2a$12$s9UsA8dSLGFD0rsSSpzq8.vZt.1QdZYxXWxtnjPWadxZqQ39ErmKS",
   },
   category: [
-    {name: "Electronics"},
-    {name: "Toys"},
-    {name: "Kitchen"},
-    {name: "Babies"},
+    { name: "Electronics" },
+    { name: "Toys" },
+    { name: "Kitchen" },
+    { name: "Babies" },
   ],
   customers: [
     {
@@ -19,6 +19,14 @@ module.exports = {
       address: "12, Mars Aven.",
       email: "user1@mail.com",
       password: "P4ssword@",
+    },
+  ],
+  suppliers: [
+    {
+      name: "Max Wei Qhang",
+      address: "24 Lixieng rd, Hanghzou Pv.",
+      email: "supplier1@mail.com",
+      phone: "09012345678",
     },
   ],
 };

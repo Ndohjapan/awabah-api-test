@@ -68,6 +68,7 @@ class SupplierRepository {
         updateData,
         {
           new: true,
+          select: "-active"
         },
       );
 
