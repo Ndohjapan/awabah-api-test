@@ -11,5 +11,14 @@ module.exports = {
     {name: "Toys"},
     {name: "Kitchen"},
     {name: "Babies"},
-  ]
+  ],
+  customers: [
+    {
+      name: "John Doe",
+      phone: "09012345678",
+      address: "12, Mars Aven.",
+      email: "user1@mail.com",
+      password: "P4ssword@",
+    },
+  ],
 };
