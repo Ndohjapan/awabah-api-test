@@ -10,6 +10,10 @@ module.exports = {
   "page-not-found": "Page Not Found",
   "email-null": "Email cannot be null",
   "email-format": "Invalid Email format",
+  "stock-null": "Stock cannot be null",
+  "stock-format": "Stock must be a number",
+  "price-null": "Price cannot be null",
+  "price-format": "Price must be a number",
   "password-format": "Password must be a string",
   "admin-creation-error": "Cannot create admin",
   "admin-update-error": "Cannot update user",
@@ -20,6 +24,12 @@ module.exports = {
   "name-format": "Name must be a string",
   "address-required" :"Address is required",
   "address-format": "Address must be a string",
+  "description-required" :"Description is required",
+  "description-format": "Description must be a string",
+  "category-required" :"Category is required",
+  "category-format": "Category must be a string",
+  "supplier-required" :"Supplier is required",
+  "supplier-format": "Supplier must be a string",
   "phone-required" :"Phone is required",
   "phone-format": "Phone must be a number",
   "phone-length": "Invalid Phone Length",
@@ -31,5 +41,8 @@ module.exports = {
   "category-delete-error": "Cannot delete category",
   "supplier-creation-error": "Cannot create supplier",
   "supplier-find-error": "Supplier does not exist",
-  "supplier-delete-error": "Cannot delete supplier"
+  "supplier-delete-error": "Cannot delete supplier",
+  "product-creation-error": "Cannot create product",
+  "product-find-error": "Product does not exist",
+  "product-delete-error": "Cannot delete product"
 };

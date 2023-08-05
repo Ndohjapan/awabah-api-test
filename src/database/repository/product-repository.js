@@ -1,37 +1,47 @@
 const en = require("../../../locale/en");
 const internalException = require("../../error/internal-exception");
-const { Category } = require("../model");
+const { Product } = require("../model");
 
-class CategoryRepository {
-  async CreateCategory({ name }) {
+class ProductRepository {
+  async CreateProduct({ name, description, stock, price, category, supplier }) {
     try {
-      const category = await Category.create({ name });
-      return category;
+      const product = await Product.create({
+        name,
+        description,
+        stock,
+        price,
+        category,
+        supplier,
+      });
+      return product;
     } catch (error) {
       throw new internalException(en["server-error"]);
     }
   }
 
-  async FindCategoryByName({ name }) {
+  async FuzzySearchName(searchTerm) {
     try {
-      const existingCategory = await Category.findOne({ name, active: true });
+      const existingProduct = await Product.find({
+        $text: { $search: searchTerm },
+        active: true,
+      });
 
-      if (!existingCategory) throw new Error();
+      if (!existingProduct) throw new Error();
 
-      return existingCategory;
+      return existingProduct;
     } catch (err) {
       throw new internalException(en["server-error"]);
     }
   }
 
-  async FindCategoryById(id) {
+  async FindProductById(id) {
     try {
-      const category = await Category.findById(id);
+      const product = await Product.findById(id);
 
-      if (!category) throw new Error();
+      if (!product) throw new Error();
 
-      if (category.active) {
-        return category;
+      if (product.active) {
+        return product;
       }
 
       throw new Error();
@@ -40,21 +50,32 @@ class CategoryRepository {
     }
   }
 
-  async FindAll() {
-    try {
-      const categorys = await Category.find({ active: true }).sort({
-        createAt: -1,
-      });
-      if (!categorys) throw new Error();
-      return categorys;
-    } catch (error) {
-      throw new internalException(en["server-error"]);
-    }
+  async FindAll({ page, limit }) {
+    // eslint-disable-next-line no-unused-vars
+    return new Promise((resolve, reject) => {
+      try {
+        const options = {
+          sort: { createdAt: -1 },
+          page,
+          limit,
+        };
+
+        Product.paginate({}, options, function (err, result) {
+          if (err) {
+            throw Error("Error in getting products");
+          } else {
+            resolve(result);
+          }
+        });
+      } catch (error) {
+        throw new internalException(en["server-error"]);
+      }
+    });
   }
 
-  async DeleteCategory(id) {
+  async DeleteProduct(id) {
     try {
-      await Category.findByIdAndUpdate(id, { $set: { active: false } });
+      await Product.findByIdAndUpdate(id, { $set: { active: false } });
       return true;
     } catch (error) {
       throw new internalException(en["server-error"]);
@@ -63,7 +84,7 @@ class CategoryRepository {
 
   async UpdateOne({ id, updateData }) {
     try {
-      const category = await Category.findOneAndUpdate(
+      const product = await Product.findOneAndUpdate(
         { _id: id, active: true },
         updateData,
         {
@@ -71,11 +92,34 @@ class CategoryRepository {
         },
       );
 
-      return category;
+      return product;
     } catch (error) {
       throw new internalException(en["server-error"]);
     }
   }
+
+  async FilterProduct({ page, limit, data }) {
+    // eslint-disable-next-line no-unused-vars
+    return new Promise((resolve, reject) => {
+      try {
+        const options = {
+          sort: { createdAt: -1 },
+          page,
+          limit,
+        };
+
+        Product.paginate(data, options, function (err, result) {
+          if (err) {
+            throw Error("Error in getting products");
+          } else {
+            resolve(result);
+          }
+        });
+      } catch (error) {
+        throw new internalException(en["server-error"]);
+      }
+    });
+  }
 }
 
-module.exports = CategoryRepository;
+module.exports = ProductRepository;
