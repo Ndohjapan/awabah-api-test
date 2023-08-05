@@ -8,6 +8,10 @@ class ProductService {
     this.repository = new ProductRepository();
   }
 
+  escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+  }
+
   async CreateProduct(data) {
     try {
       const product = await this.repository.CreateProduct(data);
@@ -30,7 +34,9 @@ class ProductService {
 
   async SearchProductName(searchTerm) {
     try {
-      const products = await this.repository.FuzzySearchName(searchTerm);
+      const regex = new RegExp(this.escapeRegex(searchTerm), "gi");
+
+      const products = await this.repository.FuzzySearchName(regex);
 
       return products;
     } catch (error) {
@@ -38,7 +44,7 @@ class ProductService {
     }
   }
 
-  async FindAll({page, limit}) {
+  async FindAll({ page, limit }) {
     try {
       const products = await this.repository.FindAll({
         page,
@@ -53,6 +59,7 @@ class ProductService {
   async DeleteProduct(id) {
     try {
       const isProduct = await this.repository.FindProductById(id);
+      console.log(isProduct);
       if (isProduct.id) {
         const product = await this.repository.DeleteProduct(id);
 
@@ -72,6 +79,8 @@ class ProductService {
         updateData[key] = value;
       }
     });
+
+    updateData.active = undefined;
 
     try {
       const product = await this.repository.UpdateOne({ id, updateData });
