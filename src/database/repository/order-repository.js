@@ -92,6 +92,7 @@ class OrderRepository {
 
         Order.paginate(data, options, function (err, result) {
           if (err) {
+            console.log(err);
             throw Error("Error in getting orders");
           } else {
             resolve(result);

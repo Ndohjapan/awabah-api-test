@@ -1,4 +1,4 @@
-const {validateCreateOrderInput, validateOrderId} = require("../middleware/input-validations/order-validator");
+const {validateCreateOrderInput, validateOrderId, validateFilterOrderInput} = require("../middleware/input-validations/order-validator");
 const catchAsync = require("../util/catch-async");
 const { rateLimiter } = require("../middleware/rate-limiter");
 const { adminAuth, generalAuth } = require("../middleware/protect");
@@ -14,7 +14,8 @@ module.exports = async (app) => {
     validateCreateOrderInput,
     catchAsync(async (req, res) => {
       let data = req.body;
-      const order = await service.CreateSupplier(data);
+      data.customer = req.user.id;
+      const order = await service.CreateOrder(data);
       res.send(order);
     }),
   );
@@ -44,28 +45,17 @@ module.exports = async (app) => {
     }),
   );
 
-  app.patch(
-    "/api/1.0/order/:id",
-    rateLimiter({ secondsWindow: 60, allowedHits: 10 }),
-    generalAuth,
-    catchAsync(async (req, res) => {
-      let data = req.body;
-      let id = req.params.id;
-      const order = await service.UpdateOne(id, data);
-      res.send(order);
-    }),
-  );
-
   app.post(
     "/api/1.0/order/filter",
     rateLimiter({ secondsWindow: 60, allowedHits: 10 }),
+    validateFilterOrderInput,
     adminAuth,
     catchAsync(async (req, res) => {
       let { page, limit } = req.query;
       page = page ? page : 1;
       limit = limit ? limit : 50;
       let data = req.body;
-      const orders = await service.FilterUsers({
+      const orders = await service.FilterOrders({
         page,
         limit,
         data,
