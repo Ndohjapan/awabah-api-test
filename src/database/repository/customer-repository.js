@@ -33,13 +33,16 @@ class CustomerRepository {
 
   async FuzzySearchName(searchTerm) {
     try {
-      const existingCustomer = await Customer.find(
+      let customerAggregate = [
         {
-          $text: { $search: searchTerm },
-          active: true,
+          $match: {
+            $or: [{ name: searchTerm }],
+            active: true,
+          },
         },
-        { password: 0 },
-      );
+      ];
+
+      const existingCustomer = await Customer.aggregate(customerAggregate);
 
       if (!existingCustomer) throw new Error();
 
@@ -51,15 +54,14 @@ class CustomerRepository {
 
   async FindCustomerById(id) {
     try {
-      const customer = await Customer.findById(id, { password: 0 });
+      const customer = await Customer.findOne(
+        { _id: id, active: true },
+        { password: 0, active: 0 },
+      );
 
       if (!customer) throw new Error();
 
-      if (customer.active) {
-        return customer;
-      }
-
-      throw new Error();
+      return customer;
     } catch (error) {
       throw new internalException(en["server-error"]);
     }

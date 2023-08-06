@@ -1,0 +1,1078 @@
+{
+	"info": {
+		"_postman_id": "513917c0-4c71-42db-92c5-8cc6ab0dc9d3",
+		"name": "awabah api test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19861520"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "admin login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Store the token from the response body as an environment variable\r",
+									"var responseBody = pm.response.json();\r",
+									"var token = responseBody.token;\r",
+									"\r",
+									"pm.environment.set(\"token\", token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin1@mail.com\",\r\n    \"password\": \"P4ssword@\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "customer login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Store the customer id in an environment variable called \"customer_id\"\r",
+									"var responseBody = pm.response.json();\r",
+									"var customerId = responseBody.customer._id;\r",
+									"var token = responseBody.token;\r",
+									"pm.environment.set(\"customer_id\", customerId);\r",
+									"pm.environment.set(\"token\", token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user1@mail.com\",\r\n    \"password\": \"P4ssword@\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/customer/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"customer",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "customer signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Jane Doe\",\r\n    \"address\": \"12th Street\",\r\n    \"phone\": 9067139201,\r\n    \"email\": \"user3@mail.com\",\r\n    \"password\": \"P4ssword@\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/customer/signup",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"customer",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "category",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Springbok\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/category",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the response body\r",
+									"var responseBody = pm.response.json();\r",
+									"\r",
+									"// Get the first supplier object from the response\r",
+									"var supplier = responseBody[0];\r",
+									"\r",
+									"// Get the id from the supplier object\r",
+									"var supplierId = supplier._id;\r",
+									"\r",
+									"// Set the supplierId as an environment variable\r",
+									"pm.environment.set(\"category_id\", supplierId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/category",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/category/{{category_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"category",
+								"{{category_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Hello world 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/category/{{category_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"category",
+								"{{category_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/category/{{category_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"category",
+								"{{category_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "{{token}}",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "x-access-key",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "customer",
+			"item": [
+				{
+					"name": "all  --- pagination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/customer?page=1&limit=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"customer"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/customer/{{customer_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"customer",
+								"{{customer_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fuzzy search",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/customer/search/jo",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"customer",
+								"search",
+								"jo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Ndoh Joel\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/customer/{{customer_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"customer",
+								"{{customer_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/customer/{{customer_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"customer",
+								"{{customer_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filter --- pagination",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Ndoh Joel\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/customer/filter?page=1&limit=10",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"customer",
+								"filter"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "{{token}}",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "x-access-key",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "order",
+			"item": [
+				{
+					"name": "create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Store the value of the field _id from the response body as an environment variable\r",
+									"var responseBody = pm.response.json();\r",
+									"var orderId = responseBody._id;\r",
+									"pm.environment.set(\"order_id\", orderId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"totalAmount\": 1796,\r\n    \"items\": [{\"product\": \"64cf964b6d01658d58b1d10b\", \"amount\": 2}, {\"product\": \"64cf933ab40d95e259b4af3d\", \"amount\": 2}]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/order/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"order",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/order/{{order_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"order",
+								"{{order_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all  --- pagination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/order?page=1&limit=10",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"order"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filter  --- pagination",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"customer\": \"{{customer_i}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/order/filter?page=1&limit=10",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"order",
+								"filter"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/order/{{order_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"order",
+								"{{order_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "{{token}}",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "x-access-token",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "products",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Lenovo laptop\",\r\n    \"description\": \"14 inches creen\",\r\n    \"stock\": 50,\r\n    \"price\": 899,\r\n    \"category\": \"{{category_id}}\",\r\n    \"supplier\": \"{{supplier_id}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/product",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all --- pagination",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Retrieve the response body\r",
+									"var responseBody = pm.response.json();\r",
+									"\r",
+									"// Select the first object from the 'docs' array\r",
+									"var product = responseBody.docs[0];\r",
+									"\r",
+									"// Get the id value from the selected object\r",
+									"var productId = product._id;\r",
+									"\r",
+									"// Set the productId value to an environment variable\r",
+									"pm.environment.set(\"product_id\", productId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/product?page=1&limit=10",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"product"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/product/{{product_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"product",
+								"{{product_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fuzzy search",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/product/search/To",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"product",
+								"search",
+								"To"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Hi Toys 2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/product/{{product_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"product",
+								"{{product_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filter --- pagination",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/product/filter?page=1&limit=10",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"product",
+								"filter"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/product/{{product_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"product",
+								"{{product_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "{{token}}",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "x-access-token",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "suppliers",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"CJ Dropshipping 2\",\r\n    \"address\": \"Quingdao 42 strt\",\r\n    \"email\": \"supplier3@mail.com\",\r\n    \"phone\": \"09012345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/supplier",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"supplier"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the response body\r",
+									"var responseBody = pm.response.json();\r",
+									"\r",
+									"// Get the first supplier object from the response\r",
+									"var supplier = responseBody[0];\r",
+									"\r",
+									"// Get the id from the supplier object\r",
+									"var supplierId = supplier._id;\r",
+									"\r",
+									"// Set the supplierId as an environment variable\r",
+									"pm.environment.set(\"supplier_id\", supplierId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/supplier",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"supplier"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/supplier/{{supplier_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"supplier",
+								"{{supplier_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Hello world 1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/supplier/{{supplier_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"supplier",
+								"{{supplier_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/supplier/{{supplier_id}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"supplier",
+								"{{supplier_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filter",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"CJ Dropshipping\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/supplier/filter",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"supplier",
+								"filter"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "{{token}}",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "x-access-key",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}

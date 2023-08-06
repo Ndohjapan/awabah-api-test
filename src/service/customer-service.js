@@ -7,6 +7,10 @@ class CustomerService {
     this.repository = new CustomerRepository();
   }
 
+  escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+  }
+
   async FindById(id) {
     try {
       const customer = await this.repository.FindCustomerById(id);
@@ -28,7 +32,9 @@ class CustomerService {
 
   async SearchCustomerName(searchTerm) {
     try {
-      const customers = await this.repository.FuzzySearchName(searchTerm);
+      const regex = new RegExp(this.escapeRegex(searchTerm), "gi");
+
+      const customers = await this.repository.FuzzySearchName(regex);
 
       return customers;
     } catch (error) {
@@ -50,13 +56,12 @@ class CustomerService {
 
   async DeleteCustomer(id, user) {
     try {
-
       if (!user.isAdmin && user._id === id) {
         throw new Error(en["customer-delete-error"]);
       }
 
       const isCustomer = await this.repository.FindCustomerById(id);
-      
+
       if (isCustomer.id) {
         const customer = await this.repository.DeleteCustomer(id);
 
@@ -64,7 +69,6 @@ class CustomerService {
       }
 
       throw new Error(en["customer-find-error"]);
-      
     } catch (error) {
       throw new NotFoundException(
         error.customer || en["customer-delete-error"],
@@ -80,6 +84,12 @@ class CustomerService {
         updateData[key] = value;
       }
     });
+
+
+    updateData.email = undefined;
+    updateData.active = undefined;
+    updateData.password = undefined;
+
 
     try {
       const customer = await this.repository.UpdateOne({ id, updateData });
@@ -100,7 +110,7 @@ class CustomerService {
     });
 
     try {
-      const customers = await this.repository.FilterUsers({
+      const customers = await this.repository.FilterCustomer({
         page,
         limit,
         data: updateData,

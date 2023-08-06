@@ -13,26 +13,40 @@ class OrderService {
   async CreateOrder(data) {
     try {
       const productsLength = data.items.length;
-      const productsArray = data.itmes;
+      const productsArray = data.items.map((item) => item.product);
       const filter = { _id: { $in: productsArray } };
 
       const products = await this.productRepository.FilterProduct({
         page: 1,
         limit: productsLength,
-        data: filter
+        data: filter,
       });
 
-      const totalCost = products.reduce((sum, obj) => sum + obj.price, 0);
+      if (products.totalDocs !== data.items.length) {
+        throw new Error(en["invalid-product-id"]);
+      }
 
-      if(totalCost != data.totalAmount){
-        throw new Error("Cannot Create Order");
+      let totalCost = 0;
+
+      products.docs.forEach((product) => {
+        const item = data.items.find(
+          (item) => item.product.toString() === product._id.toString(),
+        );
+        if (!item) {
+          throw new Error(en["invalid-product-id"]);
+        }
+        totalCost += product.price * item.amount;
+      });
+
+      if (totalCost !== data.totalAmount) {
+        throw new Error(en["product-cost-invalid"]);
       }
 
       const order = await this.repository.CreateOrder(data);
 
       return order;
     } catch (error) {
-      throw new CreationException(en["order-creation-error"], 401);
+      throw new CreationException(error.message || en["order-creation-error"], 401);
     }
   }
 
@@ -110,7 +124,7 @@ class OrderService {
     });
 
     try {
-      const orders = await this.repository.FilterUsers({
+      const orders = await this.repository.FilterOrder({
         page,
         limit,
         data: updateData,

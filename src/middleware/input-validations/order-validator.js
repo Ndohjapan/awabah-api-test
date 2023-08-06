@@ -6,13 +6,10 @@ const mongoose = require("mongoose");
 const validateCreateOrderInput = [
   check("totalAmount")
     .notEmpty()
-    .withMessage(en["price-required"])
+    .withMessage(en["total-amount-required"])
     .bail()
-    .isString()
-    .withMessage(en["price-format"])
-    .bail()
-    .isEmail()
-    .withMessage(en["email-format"]),
+    .isNumeric()
+    .withMessage(en["total-amount-format"]),
   check("items")
     .notEmpty()
     .withMessage(en["items-required"])
@@ -22,21 +19,12 @@ const validateCreateOrderInput = [
     .bail()
     .custom((value) => {
       for (const item of value) {
-        if (!mongoose.Types.ObjectId.isValid(item)) {
-          throw new Error(en["db-id-format"]);
+        if (!mongoose.Types.ObjectId.isValid(item.product)) {
+          throw new Error(en["id-format"]);
         }
-      }
-      return true;
-    }),
-  check("customer")
-    .notEmpty()
-    .withMessage(en["category-required"])
-    .bail()
-    .isString()
-    .withMessage(en["category-format"])
-    .custom((value) => {
-      if (!mongoose.Types.ObjectId.isValid(value)) {
-        throw new Error(en["db-id-format"]);
+        if (typeof item.amount !== "number" || item.amount < 1) {
+          throw new Error(en["product-find-error"]);
+        }
       }
       return true;
     }),
@@ -74,4 +62,26 @@ const validateOrderId = [
   },
 ];
 
-module.exports = { validateCreateOrderInput, validateOrderId };
+const validateFilterOrderInput = [
+  check("customer")
+    .optional()
+    .bail()
+    .isString()
+    .withMessage(en["id-format"])
+    .custom((value) => {
+      if (!mongoose.Types.ObjectId.isValid(value)) {
+        throw new Error(en["db-id-format"]);
+      }
+      return true;
+    }),
+
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(new ValidationException(errors.array()));
+    }
+    next();
+  },
+];
+
+module.exports = { validateCreateOrderInput, validateOrderId, validateFilterOrderInput };

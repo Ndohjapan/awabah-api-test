@@ -12,6 +12,7 @@ module.exports = async (app) => {
   app.get(
     "/api/1.0/customer",
     rateLimiter({ secondsWindow: 60, allowedHits: 10 }),
+    adminAuth,
     catchAsync(async (req, res) => {
       let { page, limit } = req.query;
       page = page ? page : 1;
@@ -36,11 +37,10 @@ module.exports = async (app) => {
   app.get(
     "/api/1.0/customer/search/:searchTerm",
     rateLimiter({ secondsWindow: 60, allowedHits: 10 }),
-    validateCustomerId,
     generalAuth,
     catchAsync(async (req, res) => {
       const searchTerm = req.params.searchTerm;
-      const customers = await service.SearchProductName(searchTerm);
+      const customers = await service.SearchCustomerName(searchTerm);
       res.send(customers);
     }),
   );
@@ -49,6 +49,7 @@ module.exports = async (app) => {
     "/api/1.0/customer/:id",
     rateLimiter({ secondsWindow: 60, allowedHits: 10 }),
     generalAuth,
+    validateCustomerId,
     catchAsync(async (req, res) => {
       let data = req.body;
       let id = req.params.id;

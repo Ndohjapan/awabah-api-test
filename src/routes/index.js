@@ -3,5 +3,6 @@ module.exports = {
   category: require("./category-route"),
   supplier: require("./supplier-route"),
   product: require("./product-routes"),
-  customer: require("./customer-route")
+  customer: require("./customer-route"),
+  order: require("./order-route")
 };

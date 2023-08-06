@@ -2,6 +2,8 @@
 
 Inventory Management API
 
+### API Documentation: 
+https://documenter.getpostman.com/view/19861520/2s9XxySE5p
 
 ## Setup Development Environment
 - ### Setup Redis
