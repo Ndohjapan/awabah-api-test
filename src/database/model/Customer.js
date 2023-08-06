@@ -38,8 +38,6 @@ const CustomerSchema = new mongoose.Schema(
 
 CustomerSchema.plugin(mongoosePaginate);
 
-CustomerSchema.index({ name: "text" });
-
 CustomerSchema.methods.validatePassword = function (password) {
   return bcrypt.compare(password, this.password);
 };

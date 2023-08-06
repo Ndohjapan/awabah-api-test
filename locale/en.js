@@ -48,6 +48,9 @@ module.exports = {
   "supplier-delete-error": "Cannot delete supplier",
   "product-creation-error": "Cannot create product",
   "product-find-error": "Product does not exist",
+  "product-amount-error": "Invalid product amount",
+  "invalid-product-id": "Invalid product id",
+  "product-cost-invalid": "Product cost does not tally with user input",
   "product-delete-error": "Cannot delete product",
   "order-creation-error": "Cannot create order",
   "order-find-error": "Order does not exist",
@@ -55,5 +58,7 @@ module.exports = {
   "customer-creation-error": "Cannot create customer",
   "customer-find-error": "Customer does not exist",
   "customer-delete-error": "Cannot delete customer",
-  "signup-successful": "Signup Successful"
+  "signup-successful": "Signup Successful",
+  "total-amount-required": "Total Amount is required",
+  "total-amount-format": "Total Amount must be a number"
 };

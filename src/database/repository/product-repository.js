@@ -42,15 +42,14 @@ class ProductRepository {
 
   async FindProductById(id) {
     try {
-      const product = await Product.findById(id, { active: 0 });
+      const product = await Product.findOne(
+        { _id: id, active: true },
+        { active: 0 },
+      );
 
       if (!product) throw new Error();
 
-      if (product.active) {
-        return product;
-      }
-
-      throw new Error();
+      return product;
     } catch (error) {
       throw new internalException(en["server-error"]);
     }
@@ -67,7 +66,7 @@ class ProductRepository {
           select: "-active",
         };
 
-        Product.paginate({}, options, function (err, result) {
+        Product.paginate({active: true}, options, function (err, result) {
           if (err) {
             throw Error("Error in getting products");
           } else {
@@ -83,10 +82,8 @@ class ProductRepository {
   async DeleteProduct(id) {
     try {
       await Product.findByIdAndUpdate(id, { $set: { active: false } });
-      console.log(id);
       return true;
     } catch (error) {
-      console.log(error);
       throw new internalException(en["server-error"]);
     }
   }

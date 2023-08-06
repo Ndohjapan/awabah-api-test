@@ -100,6 +100,8 @@ class ProductService {
       }
     });
 
+    updateData.active = true;
+
     try {
       const products = await this.repository.FilterUsers({
         page,
